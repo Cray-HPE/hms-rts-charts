@@ -2,7 +2,7 @@ apiVersion: v2
 name: "cray-hms-rts"
 version: 2.0.0
 description: "Kubernetes resources for cray-hms-rts"
-home: "https://github.com/Cray-HPE/cray-hms-redfish-translation-layer"
+home: "https://github.com/Cray-HPE/hms-rts-charts"
 sources:
   - "https://github.com/Cray-HPE/hms-redfish-translation-layer"
 dependencies:
