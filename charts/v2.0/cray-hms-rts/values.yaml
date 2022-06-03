@@ -1,6 +1,6 @@
 ---
 global:
-  appVersion: 1.16.0
+  appVersion: 1.17.0
 
 image:
   repository: artifactory.algol60.net/csm-docker/stable/hms-redfish-translation-service
@@ -214,7 +214,7 @@ environment:
     hsm_url: "http://cray-smd"
     https_cert: "configs/rts.crt"
     https_key: "configs/rts.key"
-    collector_url: "http://cray-hms-hmcollector"
+    collector_url: "http://cray-hms-hmcollector-ingress"
     backend_helper: "JAWS"
     rts_dns_provider: "k8s_service"
     certificate_vault_keypath: "secret/pdu-creds/certificates"
