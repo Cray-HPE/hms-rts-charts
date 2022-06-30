@@ -1,6 +1,6 @@
 ---
 global:
-  appVersion: 1.17.0
+  appVersion: 1.19.0
 
 image:
   repository: artifactory.algol60.net/csm-docker/stable/hms-redfish-translation-service
