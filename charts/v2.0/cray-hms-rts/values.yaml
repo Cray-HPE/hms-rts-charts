@@ -121,6 +121,9 @@ cray-service:
             configMapKeyRef:
               name: cray-rts-config
               key: cray-hms-rts.jaws_polling_workers
+      volumeMounts:
+        - name: default-tls-vol
+          mountPath: /default-tls/
       ports:
         - name: http
           containerPort: 8082
@@ -164,6 +167,11 @@ cray-service:
         runAsUser: 999
         runAsGroup: 1000
         runAsNonRoot: true
+  volumes:
+    default-tls-vol:
+      name: default-tls-vol
+      secret: 
+        secretName: cray-hms-rts-default-tls
   service:
     type: ClusterIP
     ports:
@@ -212,8 +220,8 @@ environment:
     vault_skip_verify: "true"
     hms_vault_keypath: "secret/hms-creds"
     hsm_url: "http://cray-smd"
-    https_cert: "configs/rts.crt"
-    https_key: "configs/rts.key"
+    https_cert: "/default-tls/tls.crt"
+    https_key: "/default-tls/tls.key"
     collector_url: "http://cray-hms-hmcollector-ingress"
     backend_helper: "JAWS"
     rts_dns_provider: "k8s_service"
