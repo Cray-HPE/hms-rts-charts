@@ -1,6 +1,6 @@
 ---
 global:
-  appVersion: 1.19.0-20220715214547.db9aedc
+  appVersion: 1.20.0
 
 image:
   repository: artifactory.algol60.net/csm-docker/stable/hms-redfish-translation-service
@@ -170,7 +170,7 @@ cray-service:
   volumes:
     default-tls-vol:
       name: default-tls-vol
-      secret: 
+      secret:
         secretName: cray-hms-rts-default-tls
   service:
     type: ClusterIP
