@@ -1,0 +1,20 @@
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: cray-hms-rts-default-tls
+spec:
+  commonName: cray-hms-rts
+  dnsNames:
+  - cray-hms-rts.services.cluster.svc.local
+  - cray-hms-rts.services.cluster.svc
+  - cray-hms-rts.services
+  duration: 720h0m0s
+  issuerRef:
+    kind: Issuer
+    name: cert-manager-issuer-common
+  keyAlgorithm: rsa
+  keyEncoding: pkcs1
+  keySize: 2048
+  renewBefore: 24h0m0s
+  secretName: cray-hms-rts-default-tls
