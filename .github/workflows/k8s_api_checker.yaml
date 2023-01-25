@@ -2,5 +2,5 @@ name: Kubernetes API Checker
 on: [push, pull_request, workflow_dispatch]
 jobs:
   k8s_api_checker:
-    uses: Cray-HPE/hms-build-chart-workflows/.github/workflows/k8s_api_checker.yaml@kubernetes-api-checker-casmhms-5842
+    uses: Cray-HPE/hms-build-chart-workflows/.github/workflows/k8s_api_checker.yaml@kubernetes-api-checker-casmhms-5842-test-new
     secrets: inherit
