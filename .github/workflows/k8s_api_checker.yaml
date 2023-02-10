@@ -4,7 +4,7 @@ jobs:
   k8s_api_checker:
     # uses: Cray-HPE/hms-build-chart-workflows/.github/workflows/k8s_api_checker.yaml@v2
     uses: Cray-HPE/hms-build-chart-workflows/.github/workflows/k8s_api_checker.yaml@kubernetes-api-checker-casmhms-5842
-    # with:
-    #   component-versions: k8s=v1.21.0,cert-manager=v0.14.1
-    #   ignore-errors: true
+    with:
+      component-versions: k8s=v1.21.0,cert-manager=v0.14.1
+    #  ignore-errors: true
     secrets: inherit
