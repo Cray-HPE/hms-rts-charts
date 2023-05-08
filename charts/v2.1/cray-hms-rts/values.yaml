@@ -1,0 +1,70 @@
+---
+global:
+  appVersion: 1.21.0
+
+image:
+  repository: artifactory.algol60.net/csm-docker/stable/hms-redfish-translation-service
+  pullPolicy: IfNotPresent
+
+kubectl:
+  image:
+    repository: artifactory.algol60.net/csm-docker/stable/docker-kubectl
+    tag: 1.19.15
+    pullPolicy: IfNotPresent
+
+redis:
+  image:
+    repository: artifactory.algol60.net/csm-docker/stable/docker.io/library/redis
+    tag: 5.0-alpine
+    pullPolicy: IfNotPresent
+    
+
+podAnnotations: {}
+# For example, override the default Istio sidecar proxy memory limit:
+# podAnnotations:
+#   sidecar.istio.io/proxyMemoryLimit: 5Gi
+
+rtsDefaultName: "cray-hms-rts"
+rtsDoInit: true
+
+rtsConfig:
+  replicas: 1
+  resources: {}
+
+# We're not using the cray-service chart anymore but this needs to be
+# defined here to pick up the sealed secrets from customizations.yaml
+# and avoid errors if sealedSecrets remains empty.
+cray-service:
+  sealedSecrets: []
+
+# This is where the environment variable defaults are actually set.
+# Override these as needed to adjust for other environments.  For
+# example, you can can say `values.environment.cray_hms_rts.backend_helper: GCloud`
+# in a value override to enable the 'GCloud' backend helper.
+environment:
+  cray_hms_rts:
+    log_level: "INFO"
+    rf_msg_host: "cray-shared-kafka-kafka-bootstrap.services.svc.cluster.local:9092"
+    vault_addr: "http://cray-vault.vault:8200"
+    vault_skip_verify: "true"
+    hms_vault_keypath: "secret/hms-creds"
+    hsm_url: "http://cray-smd"
+    sls_url: "http://cray-sls/v1"
+    https_cert: "/default-tls/tls.crt"
+    https_key: "/default-tls/tls.key"
+    collector_url: "http://cray-hms-hmcollector-ingress"
+    backend_helper: "JAWS"
+    rts_dns_provider: "k8s_service"
+    certificate_vault_keypath: "secret/pdu-creds/certificates"
+
+    # JAWs Backend Helper Configuration
+    jaws_vault_keypath: "secret/pdu-creds"
+    jaws_polling_enabled: true
+    jaws_polling_interval: 10  # Seconds
+    jaws_polling_temperature_interval: 30  # Seconds
+    jaws_polling_humidity_interval: 30  # Seconds
+    jaws_polling_workers: 30
+  wait_for_cray_hms_rts_init:
+    # a non-empty string in the following causes the initContainer to
+    # simply exit successfully and immediately.
+    dont_wait: ""

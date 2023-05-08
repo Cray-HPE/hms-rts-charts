@@ -1,0 +1,68 @@
+{{- if .Values.rtsDoInit -}}
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: cray-hms-rts-init-deleter
+  annotations:
+    "helm.sh/hook": pre-install,pre-upgrade,pre-rollback
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+    "helm.sh/hook-weight": "0"
+spec:
+  template:
+    metadata:
+      annotations:
+        sidecar.istio.io/inject: “false”
+    spec:
+      restartPolicy: OnFailure
+      serviceAccountName: "{{ .Release.Name | default .Values.rtsDefaultName }}"
+      containers:
+        - name: job-deleter
+          image: "{{ .Values.kubectl.image.repository }}:{{ .Values.kubectl.image.tag }}"
+          imagePullPolicy: "{{ .Values.kubectl.image.pullPolicy }}"
+          command:
+          - /bin/sh
+          - -c
+          - set -x;
+            echo "Deleting Jobs";
+            kubectl -n services delete job cray-hms-rts-init;
+            exit 0
+---
+apiVersion: batch/v1
+kind:       Job
+metadata:
+  name: cray-hms-rts-init
+  labels:
+    app: cray-hms-rts-init
+spec:
+  template:
+    metadata:
+      labels:
+        app: cray-hms-rts-init
+    spec:
+      serviceAccountName: "{{ .Release.Name | default .Values.rtsDefaultName }}-vault-watcher"
+      restartPolicy: OnFailure
+      containers:
+        - name: cray-hms-rts-init
+          env:
+            - name:  VAULT_ADDR
+              value: {{ .Values.environment.cray_hms_rts.vault_addr }}
+            - name:  VAULT_SKIP_VERIFY
+              value: {{ .Values.environment.cray_hms_rts.vault_skip_verify }}
+            - name:  VAULT_RTS_MAX_CONNECTION_ATTEMPTS
+              value: "120"
+            - name: VAULT_RTS_DEFAULT_CREDENTIALS
+              valueFrom:
+                secretKeyRef:
+                  name: cray-hms-rts-credentials
+                  key: vault_rts_defaults
+            - name: VAULT_PDU_DEFAULT_CREDENTIALS
+              valueFrom:
+                secretKeyRef:
+                  name: cray-hms-rts-credentials
+                  key: vault_pdu_defaults
+            - name: JAWS_VAULT_KEYPATH
+              value: {{ .Values.environment.cray_hms_rts.jaws_vault_keypath }}
+          image: {{ .Values.image.repository }}:{{ default .Values.global.appVersion .Values.image.tag }}
+          command: ["vault_loader"]
+{{- end }}
