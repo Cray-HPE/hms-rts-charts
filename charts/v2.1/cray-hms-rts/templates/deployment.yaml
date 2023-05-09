@@ -14,16 +14,19 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: {{ .Release.Name | default .Values.rtsDefaultName }}
+      app.kubernetes.io/instance: {{ .Release.Name | default .Values.rtsDefaultName }}
   template:
     metadata:
       labels:
         app.kubernetes.io/name: {{ .Release.Name | default .Values.rtsDefaultName }}
+        app.kubernetes.io/instance: {{ .Release.Name | default .Values.rtsDefaultName }}
       annotations:
         traffic.sidecar.istio.io/excludeOutboundPorts: "8082,9092,2181"
         {{- if .Values.podAnnotations }}
         {{- .Values.podAnnotations | toYaml | nindent 8 -}}
         {{- end }}
     spec:
+      serviceAccountName: "{{ .Release.Name | default .Values.rtsDefaultName }}-dispatcher"
       containers:
         - name: "cray-hms-rts"
           image: {{ .Values.image.repository }}:{{ default .Values.global.appVersion .Values.image.tag }}
@@ -36,9 +39,9 @@ spec:
             - name: VAULT_ADDR
               value: "{{ .Values.environment.cray_hms_rts.vault_addr }}"
             - name: HMS_VAULT_KEYPATH
-              value: "{{ .Values.environment.cray_hms_rts.vault_skip_verify }}"
-            - name: VAULT_SKIP_VERIFY
               value: "{{ .Values.environment.cray_hms_rts.hms_vault_keypath }}"
+            - name: VAULT_SKIP_VERIFY
+              value: "{{ .Values.environment.cray_hms_rts.vault_skip_verify }}"
             - name: HSM_URL
               value: "{{ .Values.environment.cray_hms_rts.hsm_url }}"
             - name: SLS_URL
@@ -90,6 +93,10 @@ spec:
               mountPath: /default-tls/
           resources:
             {{- .Values.rtsConfig.resources | toYaml | nindent 12 }}
+          securityContext:
+            runAsUser: 65534
+            runAsGroup: 65534
+            runAsNonRoot: true
         - name: "cray-hms-rts-redis"
           image: "{{ .Values.redis.image.repository }}:{{ .Values.redis.image.tag }}"
           imagePullPolicy: "{{ .Values.redis.image.pullPolicy }}"
@@ -124,6 +131,10 @@ spec:
             - /bin/sh
             - -c
             - while [ -z "$DONT_WAIT" -a "`kubectl get jobs -n services cray-hms-rts-init -o jsonpath='{.status.conditions[0].type}'`" != "Complete" ]; do echo "Waiting for cray-hms-rts-init to complete"; sleep 3;  done; echo "Completed";
+          securityContext:
+            runAsUser: 65534
+            runAsGroup: 65534
+            runAsNonRoot: true
       volumes:
         - name: default-tls-vol
           secret:

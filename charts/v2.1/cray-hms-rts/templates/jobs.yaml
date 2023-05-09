@@ -1,4 +1,4 @@
-{{- if .Values.rtsDoInit -}}
+{{- if .Values.rtsDoInit }}
 ---
 apiVersion: batch/v1
 kind: Job
@@ -46,9 +46,9 @@ spec:
         - name: cray-hms-rts-init
           env:
             - name:  VAULT_ADDR
-              value: {{ .Values.environment.cray_hms_rts.vault_addr }}
+              value: "{{ .Values.environment.cray_hms_rts.vault_addr }}"
             - name:  VAULT_SKIP_VERIFY
-              value: {{ .Values.environment.cray_hms_rts.vault_skip_verify }}
+              value: "{{ .Values.environment.cray_hms_rts.vault_skip_verify }}"
             - name:  VAULT_RTS_MAX_CONNECTION_ATTEMPTS
               value: "120"
             - name: VAULT_RTS_DEFAULT_CREDENTIALS
@@ -62,7 +62,7 @@ spec:
                   name: cray-hms-rts-credentials
                   key: vault_pdu_defaults
             - name: JAWS_VAULT_KEYPATH
-              value: {{ .Values.environment.cray_hms_rts.jaws_vault_keypath }}
-          image: {{ .Values.image.repository }}:{{ default .Values.global.appVersion .Values.image.tag }}
+              value: "{{ .Values.environment.cray_hms_rts.jaws_vault_keypath }}"
+          image: "{{ .Values.image.repository }}:{{ default .Values.global.appVersion .Values.image.tag }}"
           command: ["vault_loader"]
 {{- end }}

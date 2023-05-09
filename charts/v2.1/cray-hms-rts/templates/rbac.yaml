@@ -1,3 +1,4 @@
+{{- if .Values.rtsDoInit }}
 ---
 kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
@@ -32,6 +33,7 @@ rules:
     verbs:     ['use']
     resourceNames:
     - restricted-transition-net-raw
+{{- end }}
 ---
 kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
@@ -63,3 +65,8 @@ rules:
   - apiGroups: ["", "batch"]
     resources: ["jobs"]
     verbs: ["get", "list"]
+  - apiGroups: ['policy']
+    resources: ['podsecuritypolicies']
+    verbs:     ['use']
+    resourceNames:
+    - restricted-transition-net-raw
