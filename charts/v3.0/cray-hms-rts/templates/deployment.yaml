@@ -70,6 +70,8 @@ spec:
               value: "{{ .Values.environment.cray_hms_rts.jaws_polling_humidity_interval }}"
             - name: JAWS_POLLING_WORKERS
               value: "{{ .Values.environment.cray_hms_rts.jaws_polling_workers }}"
+            - name: POD_NAME
+              value: "{{ .Release.Name | default .Values.rtsDefaultName }}"
           ports:
             - name: http
               containerPort: 8082
