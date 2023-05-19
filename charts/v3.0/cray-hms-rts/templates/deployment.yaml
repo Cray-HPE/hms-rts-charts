@@ -93,6 +93,8 @@ spec:
           volumeMounts:
             - name: default-tls-vol
               mountPath: /default-tls/
+            - name: google-sa-key
+              mountPath: /.config/gcloud
           resources:
             {{- .Values.rtsConfig.resources | toYaml | nindent 12 }}
           securityContext:
@@ -141,3 +143,10 @@ spec:
         - name: default-tls-vol
           secret:
             secretName: {{ .Release.Name | default .Values.rtsDefaultName }}-default-tls
+        - name:  google-sa-key
+          secret:
+            secretName: rts-serviceaccount-key
+            optional: true
+            items:
+            - key: key.json
+              path: application_default_credentials.json
