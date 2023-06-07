@@ -1,0 +1,13 @@
+apiVersion: v2
+name: "cray-hms-rts"
+version: 4.0.0
+description: "Kubernetes resources for cray-hms-rts"
+home: "https://github.com/Cray-HPE/hms-rts-charts"
+sources:
+  - "https://github.com/Cray-HPE/hms-redfish-translation-layer"
+maintainers:
+  - name: Hardware Management
+    url: https://github.com/orgs/Cray-HPE/teams/hardware-management
+appVersion: 1.23.0
+annotations:
+  artifacthub.io/license: "MIT"
