@@ -35,6 +35,7 @@ metadata:
   labels:
     app: cray-hms-rts-init
 spec:
+  ttlSecondsAfterFinished: {{ .Values.rtsInitJobTTL }}
   template:
     metadata:
       labels:

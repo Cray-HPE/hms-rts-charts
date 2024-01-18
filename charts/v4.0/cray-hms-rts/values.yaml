@@ -30,6 +30,8 @@ rtsConfig:
   replicas: 1
   resources: {}
 
+rtsInitJobTTL: 2147483647
+
 # We're not using the cray-service chart anymore but this needs to be
 # defined here to pick up the sealed secrets from customizations.yaml
 # and avoid errors if sealedSecrets remains empty.
