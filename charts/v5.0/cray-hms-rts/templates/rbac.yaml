@@ -1,0 +1,72 @@
+{{- if .Values.rtsDoInit }}
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: {{ .Release.Name | default .Values.rtsDefaultName }}-vault-watcher-crb
+subjects:
+  - kind: ServiceAccount
+    name: {{ .Release.Name | default .Values.rtsDefaultName }}-vault-watcher
+    namespace: services
+roleRef:
+  kind: ClusterRole
+  name: {{ .Release.Name | default .Values.rtsDefaultName }}-vault-watcher-role
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  namespace: services
+  name: {{ .Release.Name | default .Values.rtsDefaultName }}-vault-watcher
+---
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: {{ .Release.Name | default .Values.rtsDefaultName }}-vault-watcher-role
+rules:
+  - apiGroups: ["apps"]
+    resources: ["statefulsets"]
+    resourceNames: ["cray-vault"]
+    verbs: ["get"]
+  - apiGroups: ['policy']
+    resources: ['podsecuritypolicies']
+    verbs:     ['use']
+    resourceNames:
+    - restricted-transition-net-raw
+{{- end }}
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: {{ .Release.Name | default .Values.rtsDefaultName }}-dispatcher-crb
+subjects:
+  - kind: ServiceAccount
+    name: {{ .Release.Name | default .Values.rtsDefaultName }}-dispatcher
+    namespace: services
+roleRef:
+  kind: ClusterRole
+  name: {{ .Release.Name | default .Values.rtsDefaultName }}-dispatcher-cr
+  apiGroup: ""
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  namespace: services
+  name: {{ .Release.Name | default .Values.rtsDefaultName }}-dispatcher
+---
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: {{ .Release.Name | default .Values.rtsDefaultName }}-dispatcher-cr
+rules:
+  - apiGroups: [""]
+    resources: ["services"]
+    verbs: ["get", "create", "delete"]
+  - apiGroups: ["", "batch"]
+    resources: ["jobs"]
+    verbs: ["get", "list"]
+  - apiGroups: ['policy']
+    resources: ['podsecuritypolicies']
+    verbs:     ['use']
+    resourceNames:
+    - restricted-transition-net-raw
