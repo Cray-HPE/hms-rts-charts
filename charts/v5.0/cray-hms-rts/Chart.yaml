@@ -8,6 +8,9 @@ sources:
 maintainers:
   - name: Hardware Management
     url: https://github.com/orgs/Cray-HPE/teams/hardware-management
-appVersion: 1.26.0
+appVersion: 1.26.0  # update pprof image version below as well
 annotations:
+  artifacthub.io/images: |-
+    - name: hms-redfish-translation-service-pprof
+      image: artifactory.algol60.net/csm-docker/stable/hms-redfish-translation-service-pprof:1.26.0
   artifacthub.io/license: "MIT"
