@@ -5,13 +5,15 @@ chartVersionToCSMVersion:
   #   Chart Version: 2.0.0 <= x.y.z < 3.0.0, CSM Version: 1.4.0 <= x.y.z < 1.4.1
   #   Chart Version: 3.0.0 <= x.y.z < 4.0.0, CSM Version: 1.4.1 <= x.y.z < 1.5.0
   #   Chart Version: 4.0.0 <= x.y.z < 5.0.0, CSM Version: 1.5.0 <= x.y.z < 1.6.0
-  #   Chart Version: 5.0.0 <= x.y.z,         CSM Version: 1.6.0 <= x.y.z
+  #   Chart Version: 5.0.0 <= x.y.z < 5.1.0, CSM Version: 1.6.0 <= x.y.z < 1.7.0
+  #   Chart Version: 5.1.0 <= x.y.z,         CSM Version: 1.7.0 <= x.y.z
   #
   # Chart version: CSM version
   ">=2.0.0": "~1.4.0"
   ">=3.0.0": "~1.4.1"
   ">=4.0.0": "~1.5.0" # 4.0.0 uses a newer version of cert-manager
   ">=5.0.0": "~1.6.0" # 5.0.0 contains features specific to k8s 1.24 or later
+  ">=5.1.0": "~1.7.0" # 5.1.0 contains backwards-compatible SuccessPolicy changes for K8s 1.30 or later.
 
 # The application version must be compliant to semantic versioning. 
 # If the application makes a backwards incompatible change, then its major version needs to be increment.
@@ -32,6 +34,7 @@ chartVersionToApplicationVersion:
   "4.0.2": "1.24.0"
   "5.0.0": "1.24.0"
   "5.0.1": "1.25.0"
+  "5.1.0": "1.25.0"
 
 # Test results for combinations of Chart, Application, and CSM versions.  
 chartValidationLog: []
