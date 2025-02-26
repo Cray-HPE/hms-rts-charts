@@ -5,7 +5,7 @@ chartVersionToCSMVersion:
   #   Chart Version: 2.0.0 <= x.y.z < 3.0.0, CSM Version: 1.4.0 <= x.y.z < 1.4.1
   #   Chart Version: 3.0.0 <= x.y.z < 4.0.0, CSM Version: 1.4.1 <= x.y.z < 1.5.0
   #   Chart Version: 4.0.0 <= x.y.z < 5.0.0, CSM Version: 1.5.0 <= x.y.z < 1.6.0
-  #   Chart Version: 5.0.0 <= x.y.z < 5.1.0, CSM Version: 1.6.0 <= x.y.z
+  #   Chart Version: 5.0.0 <= x.y.z < 5.1.0, CSM Version: 1.6.0 <= x.y.z < 1.7.0
   #   Chart Version: 5.1.0 <= x.y.z,         CSM Version: 1.7.0 <= x.y.z
   #
   # Chart version: CSM version
