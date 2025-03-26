@@ -134,7 +134,7 @@ spec:
           command:
             - /bin/sh
             - -c
-            - if [ -n "$DONT_WAIT" ]; then while true; do JOB_CONDITION=$(kubectl get jobs -n services cray-hms-rts-init -o jsonpath='{.status.conditions[0].type}'); if [ "$JOB_CONDITION" == "Complete" -o "$JOB_CONDITION" == "SuccessCriteriaMet" ]; then break; fi; echo "Waiting for cray-hms-rts-init to complete"; sleep 3; done; echo "Completed"; fi
+            - while [ -z "$DONT_WAIT" -a "`kubectl get jobs -n services cray-hms-rts-init -o jsonpath='{.status.conditions[0].type}'`" != "Complete" ]; do echo "Waiting for cray-hms-rts-init to complete"; sleep 3;  done; echo "Completed";
           securityContext:
             runAsUser: 65534
             runAsGroup: 65534
