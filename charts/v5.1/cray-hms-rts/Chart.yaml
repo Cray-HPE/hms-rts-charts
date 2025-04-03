@@ -11,6 +11,6 @@ maintainers:
 appVersion: 1.27.0
 annotations:
   artifacthub.io/images: |-
-    - name: cray-rts-pprof
-      image: artifactory.algol60.net/csm-docker/stable/cray-rts-pprof:1.27.0
+    - name: hms-redfish-translation-service-pprof
+      image: artifactory.algol60.net/csm-docker/stable/hms-redfish-translation-service-pprof:1.27.0
   artifacthub.io/license: "MIT"
